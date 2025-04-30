@@ -12,15 +12,15 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="fixed w-full bg-white z-10 shadow-md">
+    <div className="fixed w-full  z-10 shadow-md">
       <div className=" px-4 py-3 flex items-center justify-between">
         {/* Logo */}
         <div className="text-xl font-bold text-blue-600">Tasko</div>
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-6 text-gray-700 font-medium">
-          <li className="cursor-pointer hover:text-blue-500">Task List</li>
-          <li className="cursor-pointer hover:text-blue-500">Spin</li>
+          <li className="cursor-pointer text-blue-500">Task List</li>
+          <li className="cursor-pointer text-blue-500">Spin</li>
         </ul>
 
         {/* Right Profile & Dropdown */}
@@ -29,17 +29,20 @@ const Navbar = () => {
             <img
               src="https://i.pravatar.cc/30"
               alt="avatar"
-              className="w-8 h-8 rounded-full object-cover"
+              className="w-8 h-8 border border-blue-600 rounded-full object-cover"
             />
-            <p className="text-sm hidden sm:block">Sadia Mim</p>
+            <p className="text-sm hidden sm:block  text-blue-500">Sadia Mim</p>
           </div>
           <Dropdown menu={{ items }}>
-            <a onClick={(e) => e.preventDefault()} className="cursor-pointer">
-              <Space>
-                <DownOutlined />
-              </Space>
-            </a>
-          </Dropdown>
+  <a 
+    onClick={(e) => e.preventDefault()} 
+    className="cursor-pointer border border-blue-500 px-3 py-1 rounded-md transition-all hover:border-blue-600"
+  >
+    <Space className="text-blue-500">
+      <DownOutlined className="text-blue-500" />
+    </Space>
+  </a>
+</Dropdown>
         </div>
 
         {/* Mobile Menu Icon */}

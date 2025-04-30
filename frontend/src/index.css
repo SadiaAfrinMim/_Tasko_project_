@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+/* For consistent focus states */
+.ant-input:focus, .ant-input-focused {
+    box-shadow: 0 0 0 2px rgba(94, 86, 231, 0.2) !important;
+    border-color: #5E56E7 !important;
+  }
+  
+  /* Button hover states */
+  .ant-btn-primary:hover, .ant-btn-primary:focus {
+    background-color: #4d46cf !important;
+    border-color: #4d46cf !important;
+  }
