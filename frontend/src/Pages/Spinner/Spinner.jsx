@@ -32,10 +32,12 @@ const Spinner = () => {
 
   return (
     <div className="min-h-screen max-w-10/12 mx-auto bg-[#F8F7FF] p-4 rounded-[2.5rem] shadow-lg">
-      <div className="w-full flex items-center justify-between p-4 space-y-4">
-        <p className="text-center font-semibold text-2xl mb-4">Task Spinner</p>
+      <div className="w-full grid grid-cols-2 items-start  gap-4  p-4 space-y-4">
+        <div >
+        <h6 className=" font-semibold text-2xl mb-4">Task Spinner</h6>
+        </div>
 
-        <div>
+        <div >
           <Select
             showSearch
             value={statusValue}
@@ -78,27 +80,34 @@ const Spinner = () => {
       </div>
 
       <div className='flex flex-col items-center justify-center space-y-8'>
-        <div className="relative">
-          <Wheel
-            mustStartSpinning={mustSpin}
-            prizeNumber={prizeNumber}
-            data={data}
-            outerBorderWidth={8}
-            outerBorderColor="#5E56E7"
-            radiusLineWidth={2}
-            radiusLineColor="#FFFFFF"
-            fontSize={14}
-            textDistance={70}
-            onStopSpinning={() => {
-              setMustSpin(false);
-              setSpinning(false);
-              setSelected(data[prizeNumber].option);
-            }}
-          />
-          <div className="absolute bottom-[-24px] left-1/2 -translate-x-1/2 z-10">
-            <div className="w-0 h-0 border-l-[12px] border-r-[12px] border-b-[24px] border-l-transparent border-r-transparent border-red-600 drop-shadow-md"></div>
-          </div>
-        </div>
+      <div className="relative">
+  <Wheel
+    mustStartSpinning={mustSpin}
+    prizeNumber={prizeNumber}
+    data={data}
+    outerBorderWidth={16} // বর্ডারের বোল্ডনেস বাড়ানো হয়েছে
+    outerBorderColor="#5E56E7"
+    radiusLineWidth={4} // ভিতরের লাইন বাড়ানো হয়েছে
+    radiusLineColor="#FFFFFF"
+    fontSize={14}
+    textDistance={70}
+    onStopSpinning={() => {
+      setMustSpin(false);
+      setSpinning(false);
+      setSelected(data[prizeNumber].option);
+    }}
+    style={{
+      // custom style
+      background: `radial-gradient(circle, transparent 60%, #F8F7FF 100%),
+                   repeating-conic-gradient(#FF8E4F 0% 0.5%, transparent 0.5% 2%)`
+    }}
+  />
+  
+  {/* dotted layer*/}
+  <div className="absolute z-50 inset-2 p-1 rounded-full border-[20px] border-dotted border-[#FF8E4F] "></div>
+
+  
+</div>
 
         <button
           onClick={handleSpinClick}

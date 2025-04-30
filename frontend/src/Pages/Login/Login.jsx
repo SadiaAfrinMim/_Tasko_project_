@@ -2,6 +2,7 @@ import { Input, Button } from 'antd';
 import React from 'react';
 import Image from '../../assets/image.png';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { BiLogIn } from 'react-icons/bi';
 
 const Login = () => {
   return (
@@ -63,13 +64,15 @@ const Login = () => {
               />
             </div>
 
-            <Button
-              block
-              size="large"
-              className="h-12 rounded-xl font-semibold text-white bg-[#5E56E7] hover:bg-[#4d46cf] border-none transition-colors"
-            >
-              Sign In
-            </Button>
+            <div className='relative w-full'>
+    <button className='relative z-10 w-full flex items-center justify-center gap-3 px-8 py-3 rounded-xl bg-gradient-to-br from-[#5E56E7] to-[#FF8E4F] text-white font-semibold hover:shadow-xl transition-all duration-300 group'>
+        <BiLogIn className='text-xl group-hover:scale-125 transition-transform' />
+        <span className='group-hover:translate-x-2 transition-transform'>
+           LogIn
+        </span>
+    </button>
+    <div className='absolute inset-0 bg-white/30 blur-2xl -z-10 animate-pulse'></div>
+</div>
           </form>
 
           {/* Enhanced Links */}
