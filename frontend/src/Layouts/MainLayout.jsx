@@ -15,7 +15,7 @@ const MainLayout = () => {
       </header>
 
       {/* Main Content */}
-      <main className="relative bottom-32 z-50 ">
+      <main className="relative bottom-32 z-40 ">
         <Outlet />
       </main>
     </div>

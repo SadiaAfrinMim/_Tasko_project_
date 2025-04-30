@@ -1,0 +1,5 @@
+/* Spinner.css (optional for more effects) */
+.spinner-animate {
+    transition: transform 4s ease-out;
+  }
+  

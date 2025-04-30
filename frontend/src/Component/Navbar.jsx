@@ -46,7 +46,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Icon */}
-        <div className="md:hidden">
+        <div className="md:hidden z-50">
           <button onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <CloseOutlined /> : <MenuOutlined />}
           </button>
@@ -55,7 +55,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Dropdown */}
       {menuOpen && (
-        <div className="md:hidden bg-white px-6 py-4 space-y-4 border-t">
+        <div className="md:hidden z-50 bg-white px-6 py-4 space-y-4 border-t">
           <div className="flex flex-col space-y-3 text-gray-700 font-medium">
             <a href="#" className="hover:text-blue-500">Task List</a>
             <a href="#" className="hover:text-blue-500">Spin</a>

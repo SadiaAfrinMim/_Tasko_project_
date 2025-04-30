@@ -3,6 +3,8 @@ import { MdDateRange } from 'react-icons/md';
 import { BiTrash } from 'react-icons/bi';
 import { Select } from 'antd';
 import Image from '../../assets/image.png';
+import SubmitModal from '../../Component/Modal/SubmitModal';
+import DeleteModal from '../../Component/Modal/DeletModal';
 
 const { Option } = Select;
 
@@ -10,6 +12,8 @@ const ViewTask = () => {
     const [categoryValue, setCategoryValue] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showSubmitModal, setShowSubmitModal] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+
 
     const filterOption = (input, option) =>
         option?.children?.toLowerCase().includes(input.toLowerCase());
@@ -23,7 +27,13 @@ const ViewTask = () => {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-4">
                     <h2 className="text-2xl font-bold text-[#5E56E7]">Task Details</h2>
                     <div className="flex gap-3">
-                        <button className="px-5 py-2 rounded-xl bg-[#E0DEFF] text-[#5E56E7] font-semibold hover:bg-[#d6d3ff] transition">Edit Task</button>
+                    <button
+    onClick={() => setIsEditing(true)}
+    className="px-5 py-2 rounded-xl bg-[#E0DEFF] text-[#5E56E7] font-semibold hover:bg-[#d6d3ff] transition"
+>
+    Edit Task
+</button>
+
                         <button className="px-5 py-2 rounded-xl bg-[#5E56E7] text-white font-semibold hover:bg-[#4b45c7] transition">Back</button>
                     </div>
                 </div>
@@ -61,39 +71,42 @@ const ViewTask = () => {
                     </div>
 
                     {/* Category Dropdown */}
-                    <div className="w-full lg:w-60">
-                        <label className="block text-sm mb-2 text-gray-600">Change Category</label>
-                        <Select
-                            showSearch
-                            value={categoryValue}
-                            onChange={(value) => setCategoryValue(value)}
-                            placeholder="Select Category"
-                            optionFilterProp="children"
-                            filterOption={filterOption}
-                            style={{
-                                width: '100%',
-                                borderRadius: '12px',
-                                height: '48px'
-                            }}
-                            suffixIcon={<span className="text-[#5E56E7]">▼</span>}
-                            dropdownStyle={{
-                                borderRadius: '12px',
-                                border: '2px solid #F4F4F4',
-                                boxShadow: '0 10px 20px rgba(94, 86, 231, 0.1)'
-                            }}
-                        >
-                            {['Development', 'Design', 'Marketing', 'Research'].map((category, idx) => (
-                                <Option key={idx} value={category}>
-                                    <div className="flex justify-between items-center">
-                                        <span>{category}</span>
-                                        {categoryValue === category && (
-                                            <span className="text-[#5E56E7]">✔</span>
-                                        )}
-                                    </div>
-                                </Option>
-                            ))}
-                        </Select>
+                    {isEditing && (
+    <div className="w-full lg:w-60">
+        <label className="block text-sm mb-2 text-gray-600">Change Category</label>
+        <Select
+            showSearch
+            value={categoryValue}
+            onChange={(value) => setCategoryValue(value)}
+            placeholder="Select Category"
+            optionFilterProp="children"
+            filterOption={filterOption}
+            style={{
+                width: '100%',
+                borderRadius: '12px',
+                height: '48px'
+            }}
+            suffixIcon={<span className="text-[#5E56E7]">▼</span>}
+            dropdownStyle={{
+                borderRadius: '12px',
+                border: '2px solid #F4F4F4',
+                boxShadow: '0 10px 20px rgba(94, 86, 231, 0.1)'
+            }}
+        >
+            {['Development', 'Design', 'Marketing', 'Research'].map((category, idx) => (
+                <Option key={idx} value={category}>
+                    <div className="flex justify-between items-center">
+                        <span>{category}</span>
+                        {categoryValue === category && (
+                            <span className="text-[#5E56E7]">✔</span>
+                        )}
                     </div>
+                </Option>
+            ))}
+        </Select>
+    </div>
+)}
+
 
                     {/* Footer Buttons */}
                     <div className='flex gap-4 justify-end'>
@@ -112,6 +125,15 @@ const ViewTask = () => {
                     </div>
                 </div>
             </div>
+            <SubmitModal visible={showSubmitModal} onClose={() => setShowSubmitModal(false)} />
+<DeleteModal
+    visible={showDeleteModal}
+    onCancel={() => setShowDeleteModal(false)}
+    onConfirm={() => {
+        // your delete logic
+        setShowDeleteModal(false);
+    }}
+/>
 
             {/* Delete Modal */}
             {showDeleteModal && (
