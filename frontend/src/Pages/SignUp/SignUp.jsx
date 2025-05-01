@@ -7,7 +7,7 @@ import { BiLogIn } from 'react-icons/bi';
 
 const SignUp = () => {
     return (
-        <div className="max-w-10/12 mx-auto rounded-[2.5rem] overflow-hidden bg-white shadow-xl flex flex-col md:flex-row min-h-screen">
+        <div className=" max-w-11/12 mx-auto rounded-2xl overflow-hidden bg-white shadow-xl flex flex-col md:flex-row min-h-screen">
             {/* Image Section */}
             <div className="md:w-1/2 w-full h-50 relative bg-gradient-to-br from-[#F8F7FF] to-[#e6e4ff]">
                 <img

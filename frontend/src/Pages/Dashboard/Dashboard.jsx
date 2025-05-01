@@ -1,32 +1,107 @@
-import React, { useState } from 'react';
-import { Select, Button } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Select, Button, message } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
+import axios from 'axios';
 import AllTask from './AllTask';
+import AddTask from '../AddTask/AddTask';
+import dayjs from 'dayjs';
+
 
 const { Option } = Select;
 
 const Dashboard = () => {
+    const [tasks, setTasks] = useState([]);
     const [statusValue, setStatusValue] = useState(null);
     const [categoryValue, setCategoryValue] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [title, setTitle] = useState('');
+      const [description, setDescription] = useState('');
+   
+      const [selectedDate, setSelectedDate] = useState(dayjs());
+ 
+    
+   
+    
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        const taskData = {
+          title,
+          description,
+          category: categoryValue,
+          date: selectedDate.format('YYYY-MM-DD'),
+          status: statusValue
+        };
+    
+        try {
+          const res = await axios.post('http://localhost:9000/tasks', taskData);
+          console.log('Task added successfully:', res.data);
+    
+          // Clear fields
+          setTitle('');
+          setDescription('');
+          setCategoryValue('');
+          setSelectedDate(dayjs());
+          setStatusValue('');
+    
+          // Close modal
+          onCancel();
+        } catch (err) {
+          console.error('Error while adding task:', err);
+        }
+      };
+    
+      const filterOption = (input, option) =>
+        (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
 
-    const filterOption = (input, option) =>
-        (option?.children ?? '').toLowerCase().includes(input.toLowerCase());
+    // Get tasks from API
+    const getTasks = async () => {
+        try {
+            const { data } = await axios.get('http://localhost:9000/tasks');
+            setTasks(data);
+        } catch (error) {
+            message.error('Failed to load tasks');
+        }
+    };
+
+    useEffect(() => {
+        getTasks();
+    }, []);
+
+    // Filter tasks
+    const filteredTasks = tasks.filter(task =>
+        (!statusValue || task.status === statusValue) &&
+        (!categoryValue || task.category === categoryValue)
+    );
+
+    // Delete task
+    const deleteTask = async (id) => {
+        try {
+            await axios.delete(`http://localhost:9000/tasks/${id}`);
+            message.success('Task deleted');
+            setTasks(prev => prev.filter(task => task._id !== id));
+        } catch (err) {
+            message.error(err,'Failed to delete');
+        }
+    };
+
+   const viewTask = async (task) => {
+      try {
+        const res = await axios.get(`http://localhost:9000/tasks/${task._id}`);
+       
+      } catch (err) {
+        message.error('Failed to fetch task details');
+      }
+    };
+   
 
     return (
-        <div className="max-w-10/12 mx-auto rounded-[2.5rem] overflow-hidden bg-white  shadow-2xl flex flex-col md:flex-row min-h-screen"
-            style={{
-                backgroundColor: '#FFFFFF',
-                boxShadow: '0 20px 40px rgba(94, 86, 231, 0.1)'
-            }}
-        >
+        <div className="max-w-11/12  mx-auto rounded-2xl bg-white shadow-2xl flex flex-col min-h-screen">
             <div className="flex-1 p-8">
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
-                    <h3 className="text-3xl font-bold mb-0" style={{ color: '#5E56E7' }}>
-                        All Task List
-                    </h3>
+                    <h3 className="text-3xl font-bold" style={{ color: '#5E56E7' }}>All Task List</h3>
 
                     <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-                        {/* Filter by Status */}
                         <Select
                             showSearch
                             value={statusValue}
@@ -41,20 +116,8 @@ const Dashboard = () => {
                                 height: '48px'
                             }}
                             suffixIcon={<span className="text-[#5E56E7]">▼</span>}
-                            dropdownStyle={{
-                                borderRadius: '12px',
-                                border: '2px solid #F4F4F4',
-                                boxShadow: '0 10px 20px rgba(94, 86, 231, 0.1)'
-                            }}
                         >
-                            {[
-                                'Not Identified',
-                                'Closed',
-                                'Communicated',
-                                'Identified',
-                                'Resolved',
-                                'Cancelled'
-                            ].map((status, idx) => (
+                            {['Not Identified', 'Closed', 'Communicated', 'Identified', 'Resolved', 'Cancelled'].map((status, idx) => (
                                 <Option key={idx} value={status}>
                                     <div className="flex justify-between items-center">
                                         <span>{status}</span>
@@ -66,7 +129,6 @@ const Dashboard = () => {
                             ))}
                         </Select>
 
-                        {/* Filter by Category */}
                         <Select
                             showSearch
                             value={categoryValue}
@@ -81,18 +143,8 @@ const Dashboard = () => {
                                 height: '48px'
                             }}
                             suffixIcon={<span className="text-[#5E56E7]">▼</span>}
-                            dropdownStyle={{
-                                borderRadius: '12px',
-                                border: '2px solid #F4F4F4',
-                                boxShadow: '0 10px 20px rgba(94, 86, 231, 0.1)'
-                            }}
                         >
-                            {[
-                                'Development',
-                                'Design',
-                                'Marketing',
-                                'Research'
-                            ].map((category, idx) => (
+                            {['Development', 'Design', 'Marketing', 'Research'].map((category, idx) => (
                                 <Option key={idx} value={category}>
                                     <div className="flex justify-between items-center">
                                         <span>{category}</span>
@@ -104,8 +156,8 @@ const Dashboard = () => {
                             ))}
                         </Select>
 
-                        {/* Add Task Button */}
                         <Button
+                            onClick={() => setIsModalOpen(true)}
                             type="primary"
                             icon={<DownloadOutlined />}
                             style={{
@@ -128,17 +180,21 @@ const Dashboard = () => {
 
                 {/* Task List */}
                 <div className="bg-[#F8F7FF] rounded-2xl p-6 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 shadow-sm">
-                    <AllTask />
-                    <AllTask/>
-                    <AllTask />
-                    <AllTask/>
-                    <AllTask />
-                    <AllTask/>
-                    <AllTask />
-                    <AllTask/>
-                    <AllTask />
-                    <AllTask/>
+                    <AllTask
+                        tasks={filteredTasks}
+                        onDelete={deleteTask}
+                        onView={viewTask}
+                        
+                    />
                 </div>
+
+                <AddTask visible={isModalOpen} onCancel={() => setIsModalOpen(false)} setTitle={setTitle}
+                        setDescription={setDescription}
+                        setStatusValue={setStatusValue}
+                        setSelectedDate={setSelectedDate}
+                        categoryValue setCategoryValue={setCategoryValue}description={description} statusValue={statusValue}selectedDate={selectedDate}
+                       title={title}
+                        handleSubmit={ handleSubmit} />
             </div>
         </div>
     );

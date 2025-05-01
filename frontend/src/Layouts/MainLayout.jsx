@@ -5,17 +5,17 @@ import Image from '../assets/image.png';
 
 const MainLayout = () => {
   return (
-    <div>
-      {/* Header with background image */}
+    <div className="relative min-h-screen">
+      {/* Header with background image and Navbar */}
       <header
-        className="bg-cover bg-center bg-no-repeat h-64"
+        className="bg-cover bg-center bg-no-repeat h-64 relative"
         style={{ backgroundImage: `url(${Image})` }}
       >
         <Navbar />
       </header>
 
       {/* Main Content */}
-      <main className="relative bottom-32 z-40 ">
+      <main className="relative -z-0 -mt-20 px-4">
         <Outlet />
       </main>
     </div>

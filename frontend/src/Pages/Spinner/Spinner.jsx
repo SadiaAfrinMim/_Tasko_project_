@@ -31,7 +31,7 @@ const Spinner = () => {
     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 
   return (
-    <div className="min-h-screen max-w-10/12 mx-auto bg-[#F8F7FF] p-4 rounded-[2.5rem] shadow-lg">
+    <div className="min-h-screen max-w-11/12  mx-auto rounded-2xl bg-[#F8F7FF] p-4  shadow-lg">
       <div className="w-full grid grid-cols-2 items-start  gap-4  p-4 space-y-4">
         <div >
         <h6 className=" font-semibold text-2xl mb-4">Task Spinner</h6>

@@ -48,9 +48,9 @@ const client = new MongoClient(uri, {
 })
 async function run() {
   try {
-    const db = client.db('plantNet-session')
+    const db = client.db('SoftVanceTasks')
     const usersCollection = db.collection('users')
-    const plantsCollection = db.collection('plants')
+    const TaskCollection = db.collection('tasks')
 
     // save or update a user in db
     app.post('/users/:email', async (req, res) => {
@@ -100,17 +100,64 @@ async function run() {
     })
 
     // save a plant data in db
-    app.post('/plants', verifyToken, async (req, res) => {
+    app.post('/tasks', async (req, res) => {
       const plant = req.body
-      const result = await plantsCollection.insertOne(plant)
+      const result = await TaskCollection.insertOne(plant)
       res.send(result)
     })
 
     // get all plants from db
-    app.get('/plants', async (req, res) => {
-      const result = await plantsCollection.find().limit(20).toArray()
+    app.get('/tasks', async (req, res) => {
+      const result = await TaskCollection.find().limit(20).toArray()
       res.send(result)
     })
+// delet 
+    app.delete('/tasks/:id', async (req, res) => {
+      const id = req.params.id
+      const query = { _id: new ObjectId(id) }
+      const result = await TaskCollection.deleteOne(query)
+      res.send(result)
+    })
+// single view
+    app.get('/tasks/:id', async (req, res) => {
+      const id = req.params.id
+      const query = { _id: new ObjectId(id) }
+      const result = await TaskCollection.findOne(query)
+      res.send(result)
+    })
+
+
+    // Patch task category by ID
+    app.patch('/task/:id', async (req, res) => {
+      const { id } = req.params;
+      const { category } = req.body;
+    
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).send('Invalid task ID');
+      }
+    
+      try {
+        const task = await TaskCollection.findOne({ _id: new ObjectId(id) });
+    
+        if (!task) {
+          return res.status(404).send('Task not found');
+        }
+    
+        if (task.category === category) {
+          return res.status(400).send('This category is already set.');
+        }
+    
+        const result = await TaskCollection.updateOne(
+          { _id: new ObjectId(id) },
+          { $set: { category } }
+        );
+    
+        res.send(result);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send('Update failed');
+      }
+    });
 
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 })
