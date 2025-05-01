@@ -1,67 +1,57 @@
 import React, { useState } from 'react';
 import { DownOutlined, MenuOutlined, CloseOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
-import { BsCheck2Square } from 'react-icons/bs'; // Logo icon
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useAuth from '../Hooks/useAuth';
 
 const Navbar = () => {
+  const { user, logOut } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-
-  // Simulate auth
-  const isLoggedIn = localStorage.getItem('user'); // Replace with your real auth logic
+  const location = useLocation();
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
+    logOut();
     navigate('/login');
   };
 
-  const dropdownItems = isLoggedIn
-    ? [
-        {
-          key: '3',
-          label: <span onClick={handleLogout}>Logout</span>,
-        },
-      ]
-    : [
-        {
-          key: '1',
-          label: <Link to="/login">Signin</Link>,
-        },
-        {
-          key: '2',
-          label: <Link to="/signup">Signup</Link>,
-        },
-      ];
+  const isActive = (path) => location.pathname === path ? 'text-blue-600 font-semibold' : 'text-white';
+
+  const dropdownItems = [
+    { key: '1', label: <Link to="/profile">Profile</Link> },
+    { key: '2', label: <Link to="/settings">Settings</Link> },
+    { key: '3', label: <span onClick={handleLogout}>Logout</span> },
+  ];
 
   return (
-    <div className="fixed w-full z-10 shadow-md ">
+    <nav className="fixed top-0 w-full z-10 shadow-md ">
       <div className="px-4 py-3 flex items-center justify-between">
-        {/* Logo with icon */}
-        <Link to="/" className="flex items-center gap-2 text-xl font-bold text-blue-600">
-          <BsCheck2Square className="text-2xl" />
-          Tasko
-        </Link>
+        {/* Logo */}
+        <Link to="/" className="text-2xl font-bold text-blue-600">Tasko</Link>
 
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center gap-6 text-gray-700 font-medium">
-          <Link to="/dashboard" className="hover:text-blue-500">Task List</Link>
-          <Link to="/spin" className="hover:text-blue-500">Spin</Link>
+        {/* Desktop Nav */}
+        <ul className="hidden md:flex items-center gap-6 font-medium">
+          <Link to="/dashboard" className={`${isActive('/dashboard')} hover:text-blue-500`}>
+            Task List
+          </Link>
+          <Link to="/spin" className={`${isActive('/spin')} hover:text-blue-500`}>
+            Spin
+          </Link>
         </ul>
 
-        {/* Right Profile or Auth Buttons */}
+        {/* Auth Section - Desktop */}
         <div className="hidden md:flex items-center gap-4">
-          {isLoggedIn ? (
+          {user ? (
             <>
               <div className="flex items-center gap-2">
                 <img
-                  src="https://i.pravatar.cc/30"
+                  src={user.photoURL || 'https://i.pravatar.cc/30'}
                   alt="avatar"
                   className="w-8 h-8 border border-blue-600 rounded-full object-cover"
                 />
-                <p className="text-sm hidden sm:block text-blue-500">Sadia Mim</p>
+                <p className="text-sm hidden sm:block text-blue-500">{user.displayName}</p>
               </div>
-              <Dropdown menu={{ items: dropdownItems }}>
+              <Dropdown menu={{ items: dropdownItems }} placement="bottomRight">
                 <a
                   onClick={(e) => e.preventDefault()}
                   className="cursor-pointer border border-blue-500 px-3 py-1 rounded-md hover:border-blue-600"
@@ -74,49 +64,55 @@ const Navbar = () => {
             </>
           ) : (
             <div className="flex gap-3">
-              <Link to="/login" className="text-blue-500 font-medium hover:text-blue-600">Signin</Link>
-              <Link to="/signup" className="text-white bg-blue-500 px-3 py-1 rounded hover:bg-blue-600 font-medium">Signup</Link>
+              <Link to="/login" className="text-blue-500 hover:text-blue-600">Signin</Link>
+              <Link to="/signup" className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Signup</Link>
             </div>
           )}
         </div>
 
-        {/* Mobile Menu Icon */}
-        <div className="md:hidden z-50">
+        {/* Mobile Toggle */}
+        <div className="md:hidden">
           <button onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <CloseOutlined /> : <MenuOutlined />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden z-50 bg-white px-6 py-4 space-y-4 border-t">
-          <div className="flex flex-col space-y-3 text-gray-700 font-medium">
-            <Link to="/dashboard" className="hover:text-blue-500">Task List</Link>
-            <Link to="/spin" className="hover:text-blue-500">Spin</Link>
-            <hr />
-            {isLoggedIn ? (
-              <>
-                <div className="flex items-center gap-3">
-                  <img
-                    src="https://i.pravatar.cc/30"
-                    alt="avatar"
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
-                  <span>Sadia Mim</span>
-                </div>
+        <div className="md:hidden bg-white px-6 py-4 space-y-4 border-t">
+          <Link to="/dashboard" className={`${isActive('/dashboard')} block hover:text-blue-500`}>
+            Task List
+          </Link>
+          <Link to="/spin" className={`${isActive('/spin')} block hover:text-blue-500`}>
+            Spin
+          </Link>
+          <hr />
+          {user ? (
+            <>
+              <div className="flex items-center gap-3">
+                <img
+                  src={user.photoURL || 'https://i.pravatar.cc/30'}
+                  alt="avatar"
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+                <span>{user.displayName}</span>
+              </div>
+              <div className="flex flex-col gap-2 text-sm text-gray-600">
+                <Link to="/profile">Profile</Link>
+                <Link to="/settings">Settings</Link>
                 <button onClick={handleLogout} className="text-left text-red-500 hover:underline">Logout</button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="hover:text-blue-500">Signin</Link>
-                <Link to="/signup" className="hover:text-blue-500">Signup</Link>
-              </>
-            )}
-          </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <Link to="/login" className="hover:text-blue-500">Signin</Link>
+              <Link to="/signup" className="hover:text-blue-500">Signup</Link>
+            </div>
+          )}
         </div>
       )}
-    </div>
+    </nav>
   );
 };
 

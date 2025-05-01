@@ -142,35 +142,8 @@ const AddTask = ({ visible, onCancel,setStatusValue,setSelectedDate,setDescripti
           </div>
         </form>
 
-        {/* Live Preview */}
-        {(title || description || categoryValue || statusValue) && (
-          <div className="mt-6 p-4 bg-white border border-gray-200 rounded-xl shadow-sm">
-            <div className="flex items-start gap-4">
-              <img src={Image} alt="Preview" className="w-16 h-16 object-cover rounded-lg" />
-              <div className="flex-1">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="text-lg font-semibold">{title || 'Untitled Task'}</h4>
-                    <p className="text-sm text-gray-600">{description || 'No description added.'}</p>
-                    <p className="text-xs text-gray-500 mt-1">Category: {categoryValue || 'N/A'}</p>
-                  </div>
-                  <BiTrash className="text-red-500 cursor-pointer text-xl" />
-                </div>
-                <div className="flex justify-between items-center mt-3">
-                  <div className="flex items-center gap-2 text-gray-500 text-sm">
-                    <MdDateRange className="text-base" />
-                    <span>{selectedDate.format('YYYY-MM-DD')}</span>
-                  </div>
-                  {statusValue && (
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[statusValue]}`}>
-                      {statusValue}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+  
+       
       </div>
     </div>
   );

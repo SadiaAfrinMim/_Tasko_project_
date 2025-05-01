@@ -3,16 +3,58 @@ import React from 'react';
 import Image from '../../assets/image.png';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { BiLogIn } from 'react-icons/bi';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
+
+import { toast } from 'react-toastify';
+
+import { saveUser } from '../../utils/utils';
+import useAuth from '../../Hooks/useAuth';
 
 const Login = () => {
+  const { signIn, signInWithGoogle, user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state?.from?.pathname || '/';
+
+  // if (loading) return <LoadingSpinner />;
+  if (user) return <Navigate to={from} replace={true} />;
+
+  const handleSubmit = async event => {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    try {
+      await signIn(email, password);
+      navigate(from, { replace: true });
+      toast.success('Login Successful');
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.message);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const data = await signInWithGoogle();
+      await saveUser(data?.user); // define saveUser if needed
+      navigate(from, { replace: true });
+      toast.success('Login Successful');
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.message);
+    }
+  };
+
   return (
-    <div className="max-w-11/12 mx-auto rounded-2xl  overflow-hidden bg-white shadow-xl flex flex-col md:flex-row min-h-screen">
+    <div className="max-w-11/12 mx-auto rounded-2xl overflow-hidden bg-white shadow-xl flex flex-col md:flex-row min-h-screen">
       {/* Image Section */}
       <div className="md:w-1/2 w-full h-50 relative bg-gradient-to-br from-[#F8F7FF] to-[#e6e4ff]">
         <img
           src={Image}
           alt="Login Visual"
-          className="w-full  object-cover opacity-90"
+          className="w-full object-cover opacity-90"
         />
         <div className="absolute bottom-8 left-8 bg-white/90 p-5 rounded-2xl shadow-lg backdrop-blur-sm">
           <h3 className="text-xl font-bold text-[#333333]">TaskFlow Pro</h3>
@@ -34,14 +76,15 @@ const Login = () => {
             <p className="text-[#666666] font-medium">Streamline your productivity journey</p>
           </div>
 
-          {/* Clean Form Design */}
-          <form className="space-y-6">
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-semibold text-[#666666] mb-2">
                 Email Address
               </label>
               <Input
                 size="large"
+                name="email"
                 placeholder="name@company.com"
                 className="rounded-xl border-2 border-[#F4F4F4] focus:border-[#5E56E7] transition-colors"
                 suffix={<span className="text-[#666666]">✉</span>}
@@ -54,28 +97,45 @@ const Login = () => {
               </label>
               <Input.Password
                 size="large"
+                name="password"
                 placeholder="••••••••"
                 className="rounded-xl border-2 border-[#F4F4F4] focus:border-[#5E56E7] transition-colors"
-                iconRender={visible => 
-                  visible ? 
-                  <EyeTwoTone className="text-[#666666]" /> : 
-                  <EyeInvisibleOutlined className="text-[#666666]" />
+                iconRender={visible =>
+                  visible ? (
+                    <EyeTwoTone className="text-[#666666]" />
+                  ) : (
+                    <EyeInvisibleOutlined className="text-[#666666]" />
+                  )
                 }
               />
             </div>
 
-            <div className='relative w-full'>
-    <button className='relative z-10 w-full flex items-center justify-center gap-3 px-8 py-3 rounded-xl bg-gradient-to-br from-[#5E56E7] to-[#FF8E4F] text-white font-semibold hover:shadow-xl transition-all duration-300 group'>
-        <BiLogIn className='text-xl group-hover:scale-125 transition-transform' />
-        <span className='group-hover:translate-x-2 transition-transform'>
-           LogIn
-        </span>
-    </button>
-    <div className='absolute inset-0 bg-white/30 blur-2xl -z-10 animate-pulse'></div>
-</div>
+            <div className="relative w-full">
+              <button
+                type="submit"
+                className="relative z-10 w-full flex items-center justify-center gap-3 px-8 py-3 rounded-xl bg-gradient-to-br from-[#5E56E7] to-[#FF8E4F] text-white font-semibold hover:shadow-xl transition-all duration-300 group"
+              >
+                <BiLogIn className="text-xl group-hover:scale-125 transition-transform" />
+                <span className="group-hover:translate-x-2 transition-transform">
+                  LogIn
+                </span>
+              </button>
+              <div className="absolute inset-0 bg-white/30 blur-2xl -z-10 animate-pulse"></div>
+            </div>
           </form>
 
-          {/* Enhanced Links */}
+          {/* Google Sign-In Button */}
+          <div className="mt-6">
+            <button
+              onClick={handleGoogleSignIn}
+              type="button"
+              className="w-full border border-[#DDD] text-[#333] hover:text-white hover:bg-[#5E56E7] font-medium py-2 px-4 rounded-xl transition-colors"
+            >
+              Sign in with Google
+            </button>
+          </div>
+
+          {/* Links */}
           <div className="mt-6 text-center space-y-3">
             <a
               href="#forgot"
@@ -84,7 +144,7 @@ const Login = () => {
               Forgot Password?
               <span className="absolute bottom-0 left-0 w-full h-px bg-[#5E56E7] opacity-0 hover:opacity-100 transition-opacity"></span>
             </a>
-            
+
             <p className="text-sm text-[#666666]">
               New here?{' '}
               <a
