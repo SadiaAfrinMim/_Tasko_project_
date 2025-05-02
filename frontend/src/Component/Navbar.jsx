@@ -24,23 +24,27 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 w-full z-10 shadow-md ">
+    <nav className="sticky top-0 w-full z-10 shadow-mdbackdrop-blur-sm">
       <div className="px-4 py-3 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="text-2xl flex gap-2 font-bold text-blue-600">
-        <div className="h-10 w-10 bg-gradient-to-r from-[#5E56E7] to-[#8179FF] rounded-lg flex  items-center justify-center text-white font-bold text-xl">
+          <div className="h-10 w-10 bg-gradient-to-r from-[#5E56E7] to-[#8179FF] rounded-lg flex items-center justify-center text-white font-bold text-xl">
             T
-          </div><p className='text-white'>Tasko</p></Link>
+          </div>
+          <p className='text-white'>Tasko</p>
+        </Link>
 
         {/* Desktop Nav */}
-        <ul className="hidden md:flex items-center gap-6 font-medium">
-          <Link to="/dashboard" className={`${isActive('/dashboard')} hover:text-blue-500`}>
-            Task List
-          </Link>
-          <Link to="/spin" className={`${isActive('/spin')} hover:text-blue-500`}>
-            Spin
-          </Link>
-        </ul>
+      
+          <ul className="hidden md:flex items-center gap-6 font-medium">
+            <Link to="/dashboard" className={`${isActive('/dashboard')} hover:text-blue-500`}>
+              Task List
+            </Link>
+            <Link to="/spin" className={`${isActive('/spin')} hover:text-blue-500`}>
+              Spin
+            </Link>
+          </ul>
+       
 
         {/* Auth Section - Desktop */}
         <div className="hidden md:flex items-center gap-4">
@@ -67,14 +71,14 @@ const Navbar = () => {
             </>
           ) : (
             <div className="flex gap-3">
-              <Link to="/login" className="text-blue-500 hover:text-blue-600">Signin</Link>
+              <Link to="/login" className="text-white hover:text-blue-600">Signin</Link>
               <Link to="/signup" className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Signup</Link>
             </div>
           )}
         </div>
 
         {/* Mobile Toggle */}
-        <div className="md:hidden">
+        <div className="md:hidden z-50">
           <button onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <CloseOutlined /> : <MenuOutlined />}
           </button>
@@ -84,15 +88,15 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white px-6 py-4 space-y-4 border-t">
-          <Link to="/dashboard" className={`${isActive('/dashboard')} block hover:text-blue-500`}>
-            Task List
-          </Link>
-          <Link to="/spin" className={`${isActive('/spin')} block hover:text-blue-500`}>
-            Spin
-          </Link>
-          <hr />
           {user ? (
             <>
+              <Link to="/dashboard" className={`${isActive('/dashboard')} block hover:text-blue-500`}>
+                Task List
+              </Link>
+              <Link to="/spin" className={`${isActive('/spin')} block hover:text-blue-500`}>
+                Spin
+              </Link>
+              <hr />
               <div className="flex items-center gap-3">
                 <img
                   src={user.photoURL || 'https://i.pravatar.cc/30'}
@@ -109,8 +113,8 @@ const Navbar = () => {
             </>
           ) : (
             <div className="flex flex-col gap-2">
-              <Link to="/login" className="hover:text-blue-500">Signin</Link>
-              <Link to="/signup" className="hover:text-blue-500">Signup</Link>
+              <Link to="/login" className="text-blue-500">Signin</Link>
+              <Link to="/signup" className="text-blue-500">Signup</Link>
             </div>
           )}
         </div>

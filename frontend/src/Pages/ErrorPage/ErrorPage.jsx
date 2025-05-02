@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from '../../assets/image.png';
 import { FaHome } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { to } from './../../../../backend/node_modules/moment/src/lib/moment/to';
 
 const ErrorPage = () => {
     return (
@@ -34,12 +36,12 @@ const ErrorPage = () => {
                                 Looks like the page you're searching for has embarked on a cosmic journey. Let's bring you back to familiar grounds.
                             </p>
                             <div className='relative inline-block'>
-                                <button className='relative z-10 flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-br from-[#5E56E7] to-[#FF8E4F] text-white font-semibold hover:shadow-xl transition-all duration-300 group'>
+                                <Link to={'/'} className='relative z-10 flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-br from-[#5E56E7] to-[#FF8E4F] text-white font-semibold hover:shadow-xl transition-all duration-300 group'>
                                     <FaHome className='text-xl group-hover:scale-125 transition-transform' />
                                     <span className='group-hover:translate-x-2 transition-transform'>
                                         Beam Me Home
                                     </span>
-                                </button>
+                                </Link>
                                 <div className='absolute inset-0 bg-white/30 blur-2xl -z-10 animate-pulse'></div>
                             </div>
                         </div>

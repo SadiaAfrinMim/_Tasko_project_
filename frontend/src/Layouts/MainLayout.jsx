@@ -30,7 +30,7 @@ const MainLayout = () => {
         {user && location.pathname === '/dashboard' && (
   <div className="text-white max-w-xl">
     <h1 className="text-3xl md:text-4xl font-bold mb-1">
-      TaskFlow! Hi {user?.displayName}
+      TaskFlow! Hi {user.displayName}
     </h1>
     <p className="text-white/80 text-sm md:text-2xl">
       Organize your work the smarter way
@@ -42,7 +42,7 @@ const MainLayout = () => {
       </header>
 
       {/* Main Content */}
-      <main className="-mt-14 relative z-10 px-4">
+      <main className="-mt-14 relative -z-0 px-4">
         <Outlet />
       </main>
 

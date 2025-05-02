@@ -10,7 +10,7 @@ const HomePage = () => {
     
 
       {/* Hero Section */}
-      <section className="max-w-11/12   mx-auto rounded-2xl overflow-hidden bg-white  shadow-2xl flex flex-col mb-12 md:flex-row min-h-screen">
+      <section className="max-w-11/12 -z-0   mx-auto rounded-2xl overflow-hidden bg-white  shadow-2xl flex flex-col mb-12 md:flex-row min-h-screen">
         <div className="w-full mx-auto    flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-12 lg:pl-16 md:pl-8 pl-4 md:mb-0">
             <h1 className="text-5xl font-bold text-[#333333] mb-6 leading-tight">

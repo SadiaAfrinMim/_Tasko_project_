@@ -3,18 +3,19 @@ import React from 'react';
 import Image from '../../assets/image.png';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { BiLogIn } from 'react-icons/bi';
-import { useNavigate, useLocation, Navigate } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
 
 import { saveUser } from '../../utils/utils';
 import useAuth from '../../Hooks/useAuth';
 
+
 const Login = () => {
   const { signIn, signInWithGoogle, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location?.state?.from?.pathname || '/';
+  const from = location?.state?.from?.pathname || '/dashboard';
 
   // if (loading) return <LoadingSpinner />;
   if (user) return <Navigate to={from} replace={true} />;
@@ -127,32 +128,33 @@ const Login = () => {
           {/* Google Sign-In Button */}
           <div className="mt-6">
             <button
-              onClick={handleGoogleSignIn}
-              type="button"
-              className="w-full border border-[#DDD] text-[#333] hover:text-white hover:bg-[#5E56E7] font-medium py-2 px-4 rounded-xl transition-colors"
-            >
-              Sign in with Google
-            </button>
+                         type="button"
+                         onClick={handleGoogleSignIn}
+                         className="w-full mt-2 flex items-center justify-center gap-3 px-6 py-3 rounded-xl border border-[#5E56E7] text-[#5E56E7] font-semibold hover:bg-[#F0F0FF] transition-all duration-300"
+                       >
+                         <BiLogIn className="text-lg" />
+                         Sign Up with Google
+                       </button>
           </div>
 
           {/* Links */}
           <div className="mt-6 text-center space-y-3">
-            <a
-              href="#forgot"
+            <Link
+              to={'/forgetpassword'}
               className="text-sm text-[#666666] hover:text-[#5E56E7] transition-colors inline-block relative"
             >
               Forgot Password?
               <span className="absolute bottom-0 left-0 w-full h-px bg-[#5E56E7] opacity-0 hover:opacity-100 transition-opacity"></span>
-            </a>
+            </Link>
 
             <p className="text-sm text-[#666666]">
               New here?{' '}
-              <a
-                href="#signup"
+              <Link to={'/signup'}
+                
                 className="font-semibold text-[#FF8E4F] hover:text-[#ff7733] transition-colors"
               >
                 Create Account
-              </a>
+              </Link>
             </p>
           </div>
         </div>

@@ -1,12 +1,106 @@
-# React + Vite
+SoftVance Task Manager
+A task management system that helps users create, manage, and track tasks efficiently. It supports functionalities such as user authentication, task creation, updating, deletion, and category management.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Features
+User Authentication: Users can sign in and manage their sessions with JWT.
 
-Currently, two official plugins are available:
+Task Management: Create, update, delete, and categorize tasks.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+CORS Support: The backend is configured to handle cross-origin requests.
 
-## Expanding the ESLint configuration
+Tools/Packages Used
+Frontend:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+React.js
+
+React Router
+
+Ant Design
+
+React Icons
+
+Axios
+
+JWT Authentication
+
+Backend:
+
+Node.js
+
+Express.js
+
+MongoDB (using MongoDB Atlas)
+
+JWT (JSON Web Tokens)
+
+CORS middleware
+
+dotenv for environment variables
+
+Cookie Parser
+
+Morgan (for HTTP request logging)
+
+Development:
+
+Visual Studio Code
+
+Postman (for testing API)
+
+Project Setup
+1. Clone the Repository
+To get started with the project, first clone the repository:
+
+bash
+Copy
+Edit
+git clone https://github.com/your-username/softvance-task-manager.git
+cd softvance-task-manager
+2. Install Dependencies
+Run the following command to install the necessary dependencies:
+
+bash
+Copy
+Edit
+npm install
+3. Environment Variables
+Create a .env file in the root directory of your project and add the following environment variables:
+
+bash
+Copy
+Edit
+ACCESS_TOKEN_SECRET=your_jwt_secret
+DB_NAME=your_db_name
+DB_PASS=your_db_password
+PORT=9000
+4. Running the Project
+Frontend:
+For the frontend, navigate to the client directory and run:
+
+bash
+Copy
+Edit
+npm start
+Backend:
+For the backend, navigate to the server directory and run:
+
+bash
+Copy
+Edit
+npm start
+The frontend will be running on http://localhost:5173, and the backend will be on http://localhost:9000.
+
+5. Testing the API
+To test the backend API, use tools like Postman to send requests. Below are some API endpoints to get started:
+
+POST /jwt - Generate a JWT token for the user.
+
+POST /tasks - Create a new task.
+
+GET /tasks - Get all tasks.
+
+GET /tasks/:id - Get a specific task by ID.
+
+PUT /tasks/:id - Update a task by ID.
+
+DELETE /tasks/:id - Delete a task by ID.

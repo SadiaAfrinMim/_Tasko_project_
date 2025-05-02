@@ -32,7 +32,7 @@ const SignUp = () => {
       const result = await createUser(email, password);
       await updateUserProfile(name);
       await saveUser({ ...result.user, displayName: name });
-      navigate('/');
+      navigate('/dashboard');
       toast.success('Signup Successful');
     } catch (err) {
       console.log(err);
@@ -44,7 +44,7 @@ const SignUp = () => {
     try {
       const data = await signInWithGoogle();
       await saveUser(data.user);
-      navigate('/');
+      navigate('/dashboard');
       toast.success('Signup Successful');
     } catch (err) {
       console.log(err);

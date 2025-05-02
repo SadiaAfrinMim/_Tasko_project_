@@ -1,12 +1,40 @@
-import { Input, Button } from 'antd';
-import React from 'react';
+import { Input, Button, message } from 'antd';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaEnvelope, FaArrowLeft } from 'react-icons/fa';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import useAuth from '../../Hooks/useAuth';
 
 const ForgetPassword = () => {
+    const [email, setEmail] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const { resetPassword } = useAuth();  // Access resetPassword function from context
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // Basic form validation
+        if (newPassword !== confirmPassword) {
+            message.error('Passwords do not match!');
+            return;
+        }
+
+        setLoading(true);
+        const result = await resetPassword(email, newPassword);  // Pass newPassword for reset
+
+        setLoading(false);
+
+        if (result === 'Password reset email sent successfully') {
+            message.success('Password reset email sent!');
+        } else {
+            message.error(result || 'An error occurred!'); // Show error message from result or fallback error
+        }
+    };
+
     return (
-        <div className="min-h-screen  max-w-10/12 mx-auto flex items-center justify-center bg-[#F8F7FF] p-4 rounded-[2.5rem] shadow-lg">
+        <div className="min-h-screen max-w-10/12 mx-auto flex items-center justify-center bg-[#F8F7FF] p-4 rounded-[2.5rem] shadow-lg">
             <div className="">
                 {/* Back Button */}
                 <Link 
@@ -28,7 +56,7 @@ const ForgetPassword = () => {
                 </div>
 
                 {/* Form */}
-                <form className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Email Input */}
                     <div>
                         <label className="block text-sm font-medium text-[#333333] mb-2">
@@ -40,6 +68,8 @@ const ForgetPassword = () => {
                             size="large"
                             className="rounded-lg"
                             style={{ backgroundColor: '#F8F7FF' }}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)} // Handle email input change
                         />
                     </div>
 
@@ -52,12 +82,14 @@ const ForgetPassword = () => {
                             size="large"
                             placeholder="••••••••"
                             className="rounded-lg"
-                            iconRender={visible => 
+                            iconRender={(visible) => 
                                 visible ? 
                                 <EyeTwoTone className="text-[#666666]" /> : 
                                 <EyeInvisibleOutlined className="text-[#666666]" />
                             }
                             style={{ backgroundColor: '#F8F7FF' }}
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)} // Handle new password input change
                         />
                     </div>
 
@@ -70,12 +102,14 @@ const ForgetPassword = () => {
                             size="large"
                             placeholder="••••••••"
                             className="rounded-lg"
-                            iconRender={visible => 
+                            iconRender={(visible) => 
                                 visible ? 
                                 <EyeTwoTone className="text-[#666666]" /> : 
                                 <EyeInvisibleOutlined className="text-[#666666]" />
                             }
                             style={{ backgroundColor: '#F8F7FF' }}
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)} // Handle confirm password input change
                         />
                     </div>
 
@@ -85,18 +119,11 @@ const ForgetPassword = () => {
                         block
                         size="large"
                         className="h-12 rounded-lg font-semibold bg-[#5E56E7] hover:bg-[#4d46cf] border-none"
+                        loading={loading}  // Show loading state while processing
                     >
                         Reset Password
                     </Button>
                 </form>
-
-                {/* Success Message */}
-                <div className="mt-6 p-4 rounded-lg bg-green-50 text-green-700 hidden">
-                    <svg className="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                    </svg>
-                    Password reset successfully!
-                </div>
             </div>
         </div>
     );

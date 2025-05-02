@@ -11,26 +11,24 @@ import ErrorPage from '../Pages/ErrorPage/ErrorPage';
 import HomePage from '../Pages/Homepage/Homepage';
 import AddTask from '../Pages/AddTask/AddTask';
 import PrivateRoute from './PrivateRoute';
-import EditTaskModal from '../Component/Modal/EditTaskModal';
 
 const Routers = () => {
     return (
         <Routes>
-        <Route path="/" element={<MainLayout />} >
-        <Route  path="/" element={<PrivateRoute><HomePage></HomePage></PrivateRoute>}></Route>
-        <Route path="/login" element={<Login></Login>} />
-        <Route path='/signup' element={<SignUp></SignUp>}/>
-      <Route path='/forgetpassword' element={<ForgetPassword></ForgetPassword>}></Route>
-      <Route path="/dashboard" element={<PrivateRoute><Dashboard></Dashboard></PrivateRoute>}></Route>
-      <Route path='/task/:id' element={<ViewTask></ViewTask>}></Route>
-      <Route path='/spin' element={<PrivateRoute><Spinner></Spinner></PrivateRoute>}></Route>
-     
-      <Route path='/error' element={<ErrorPage></ErrorPage>}></Route>
-      <Route path='/add' element={<AddTask></AddTask>}></Route>
-        </Route>
-        
-       
-      </Routes>
+            <Route path="/" element={<MainLayout />}>
+                <Route path="/" element={<PrivateRoute><HomePage /></PrivateRoute>} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/forgetpassword" element={<ForgetPassword />} />
+                <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+                <Route path="/task/:id" element={<ViewTask />} />
+                <Route path="/spin" element={<PrivateRoute><Spinner /></PrivateRoute>} />
+                <Route path="/add" element={<AddTask />} />
+            </Route>
+            
+            {/* Error Route */}
+            <Route path="/error" element={<ErrorPage />} />
+        </Routes>
     );
 };
 

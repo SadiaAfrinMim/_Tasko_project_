@@ -10,31 +10,19 @@ const port = process.env.PORT || 9000
 const app = express()
 // middleware
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://localhost:5174'],
-  credentials: true,
+  origin: ['http://localhost:5173', 'http://localhost:5174', 'https://simple-project-c9ba2.web.app'], // Add your frontend URLs here
+  credentials: true,  // Allow cookies to be sent with requests
   optionSuccessStatus: 200,
-}
-app.use(cors(corsOptions))
+};
+app.use(cors(corsOptions));
+
+
 
 app.use(express.json())
 app.use(cookieParser())
 app.use(morgan('dev'))
 
-const verifyToken = async (req, res, next) => {
-  const token = req.cookies?.token
 
-  if (!token) {
-    return res.status(401).send({ message: 'unauthorized access' })
-  }
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-    if (err) {
-      console.log(err)
-      return res.status(401).send({ message: 'unauthorized access' })
-    }
-    req.user = decoded
-    next()
-  })
-}
 
 const uri = `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASS}@cluster0.gsnwc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
@@ -168,10 +156,10 @@ async function run() {
     
         const query = { _id: new ObjectId(id) };
         const updated = { $set: taskData };
-        const options = { upsert: false }; // upsert true দিলে নতুন ডকুমেন্ট ইনসার্ট হয়ে যেতে পারে
+        const options = { upsert: false }; 
     
         const result = await TaskCollection.updateOne(query, updated, options);
-        console.log(result);
+        
         res.send(result);
       } catch (error) {
         console.error('Error updating task:', error);
@@ -179,10 +167,10 @@ async function run() {
       }
     });
     // Send a ping to confirm a successful connection
-    await client.db('admin').command({ ping: 1 })
-    console.log(
-      'Pinged your deployment. You successfully connected to MongoDB!'
-    )
+    // await client.db('admin').command({ ping: 1 })
+    // console.log(
+    //   'Pinged your deployment. You successfully connected to MongoDB!'
+    // )
   } finally {
     // Ensures that the client will close when you finish/error
   }
@@ -195,4 +183,4 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => {
   console.log(`softvance is running on port ${port}`)
-})
+}) 

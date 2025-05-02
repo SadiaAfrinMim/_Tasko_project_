@@ -12,71 +12,82 @@ import { toast } from 'react-toastify';
 const { Option } = Select;
 
 const Dashboard = () => {
-    const {user} = useAuth()
+    const { user } = useAuth()
     const [tasks, setTasks] = useState([]);
     const [statusValue, setStatusValue] = useState(null);
     const [categoryValue, setCategoryValue] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [title, setTitle] = useState('');
-      const [description, setDescription] = useState('');
-   
-      const [selectedDate, setSelectedDate] = useState(dayjs());
- 
-    
-   
-    
-      const handleSubmit = async (e) => {
+    const [description, setDescription] = useState('');
+
+    const [selectedDate, setSelectedDate] = useState(dayjs());
+
+
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-      
+
         const taskData = {
-          title,
-          description,
-          category: categoryValue,
-          date: selectedDate.format('YYYY-MM-DD'),
-          status: statusValue,
-          email: user,
+            title,
+            description,
+            category: categoryValue,
+            date: selectedDate.format('YYYY-MM-DD'),
+            status: statusValue,
+            email: user,
         };
-      
+
         try {
-          const res = await axios.post('http://localhost:9000/tasks', taskData);
-          toast.success('Task added successfully');
-      
-          // 👇 Re-fetch tasks after adding a new one
-          await getTasks();
-      
-          // Clear fields
-          setTitle('');
-          setDescription('');
-          setCategoryValue('');
-          setSelectedDate(dayjs());
-          setStatusValue('');
-      
-          // Close modal
-          onCancel();
+            const res = await axios.post('https://backend-lime-three-30.vercel.app/tasks', taskData);
+            toast.success('Task added successfully');
+
+            // 👇 Re-fetch tasks after adding a new one
+            await getTasks();
+
+            // Clear fields
+            setTitle('');
+            setDescription('');
+            setCategoryValue('');
+            setSelectedDate(dayjs());
+            setStatusValue('');
+
+            // Close modal
+            onCancel();
         } catch (err) {
-          console.error('Error while adding task:', err);
-          
+            console.error('Error while adding task:', err);
+
         }
-      };
-      
-    
-      const filterOption = (input, option) =>
+    };
+
+
+    const filterOption = (input, option) =>
         (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
 
     // Get tasks from API
     const getTasks = async () => {
         try {
-            const { data } = await axios.get('http://localhost:9000/tasks');
-            setTasks(data);
+            // Check if the user is logged in and has an email
+            if (!user?.email) {
+                message.error('No user logged in');
+                return;
+            }
+
+            // Fetch tasks from the backend and filter by user email
+            const { data } = await axios.get(`https://backend-lime-three-30.vercel.app/tasks`);
+
+            // Filter tasks based on the logged-in user's email
+            const userTasks = data.filter(task => task.email?.email === user.email);
+
+            setTasks(userTasks); // Update the tasks state with filtered tasks
         } catch (error) {
             message.error('Failed to load tasks');
         }
-       
     };
 
     useEffect(() => {
         getTasks();
-    }, []);
+    }, [user]); // Refetch tasks when user changes (e.g., on login)
+
 
     // Filter tasks
     const filteredTasks = tasks.filter(task =>
@@ -87,23 +98,23 @@ const Dashboard = () => {
     // Delete task
     const deleteTask = async (id) => {
         try {
-            await axios.delete(`http://localhost:9000/tasks/${id}`);
-           toast.success('Task deleted');
+            await axios.delete(`https://backend-lime-three-30.vercel.app/tasks/${id}`);
+            toast.success('Task deleted');
             setTasks(prev => prev.filter(task => task._id !== id));
         } catch (err) {
-            message.error(err,'Failed to delete');
+            message.error(err, 'Failed to delete');
         }
     };
 
-   const viewTask = async (task) => {
-      try {
-        const res = await axios.get(`http://localhost:9000/tasks/${task._id}`);
-       
-      } catch (err) {
-        message.error('Failed to fetch task details');
-      }
+    const viewTask = async (task) => {
+        try {
+            const res = await axios.get(`https://backend-lime-three-30.vercel.app/tasks/${task._id}`);
+
+        } catch (err) {
+            message.error('Failed to fetch task details');
+        }
     };
-   
+
 
     return (
         <div className="max-w-11/12  mx-auto rounded-2xl bg-white shadow-2xl flex flex-col min-h-screen">
@@ -194,17 +205,17 @@ const Dashboard = () => {
                         tasks={filteredTasks}
                         onDelete={deleteTask}
                         onView={viewTask}
-                        
+
                     />
                 </div>
 
                 <AddTask visible={isModalOpen} onCancel={() => setIsModalOpen(false)} setTitle={setTitle}
-                        setDescription={setDescription}
-                        setStatusValue={setStatusValue}
-                        setSelectedDate={setSelectedDate}
-                        categoryValue setCategoryValue={setCategoryValue}description={description} statusValue={statusValue}selectedDate={selectedDate}
-                       title={title}
-                        handleSubmit={ handleSubmit} />
+                    setDescription={setDescription}
+                    setStatusValue={setStatusValue}
+                    setSelectedDate={setSelectedDate}
+                    categoryValue setCategoryValue={setCategoryValue} description={description} statusValue={statusValue} selectedDate={selectedDate}
+                    title={title}
+                    handleSubmit={handleSubmit} />
             </div>
         </div>
     );

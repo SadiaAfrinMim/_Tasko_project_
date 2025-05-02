@@ -31,7 +31,7 @@ const ViewTask = () => {
     useEffect(() => {
         const fetchTask = async () => {
             try {
-                const res = await axios.get(`http://localhost:9000/tasks/${id}`);
+                const res = await axios.get(`https://backend-lime-three-30.vercel.app/tasks/${id}`);
                 setTask(res.data);
                 setCategoryValue(res.data.category || '');
                 setTitle(res.data.title || '');
@@ -39,7 +39,7 @@ const ViewTask = () => {
                 setSelectedDate(res.data.date ? dayjs(res.data.date) : null);
                 setStatusValue(res.data.status || '');
             } catch (err) {
-                console.error(err);
+
                 message.error('Failed to fetch task.');
             }
         };
@@ -49,11 +49,11 @@ const ViewTask = () => {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`http://localhost:9000/tasks/${id}`);
+            await axios.delete(`https://backend-lime-three-30.vercel.app/tasks/${id}`);
             toast.success('Task deleted successfully.');
             navigate('/dashboard');
         } catch (err) {
-            console.error(err);
+
             toast.error('Delete failed.');
         }
     };
@@ -61,7 +61,7 @@ const ViewTask = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:9000/tasks/${id}`, {
+            await axios.put(`https://backend-lime-three-30.vercel.app/tasks/${id}`, {
                 title,
                 description,
                 date: selectedDate,
@@ -76,7 +76,7 @@ const ViewTask = () => {
                 date: selectedDate,
                 category: categoryValue,
                 status: statusValue,
-                
+
             }));
             setShowEditModal(false);
         } catch (err) {
@@ -87,14 +87,14 @@ const ViewTask = () => {
 
     const handleCategoryChange = async () => {
         try {
-            await axios.patch(`http://localhost:9000/tasks/${id}`, { category: categoryValue });
+            await axios.patch(`https://backend-lime-three-30.vercel.app/task/${id}`, { category: categoryValue });
             toast.success('Category updated.');
         } catch (err) {
             console.error(err);
             toast.error('Category update failed.');
         }
     };
-    
+
 
     const filterOption = (input, option) =>
         option?.children?.toLowerCase().includes(input.toLowerCase());
