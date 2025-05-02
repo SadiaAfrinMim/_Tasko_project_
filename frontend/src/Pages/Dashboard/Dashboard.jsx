@@ -5,11 +5,14 @@ import axios from 'axios';
 import AllTask from './AllTask';
 import AddTask from '../AddTask/AddTask';
 import dayjs from 'dayjs';
+import useAuth from '../../Hooks/useAuth';
+import { toast } from 'react-toastify';
 
 
 const { Option } = Select;
 
 const Dashboard = () => {
+    const {user} = useAuth()
     const [tasks, setTasks] = useState([]);
     const [statusValue, setStatusValue] = useState(null);
     const [categoryValue, setCategoryValue] = useState(null);
@@ -30,12 +33,13 @@ const Dashboard = () => {
           description,
           category: categoryValue,
           date: selectedDate.format('YYYY-MM-DD'),
-          status: statusValue
+          status: statusValue,
+          email: user
         };
     
         try {
           const res = await axios.post('http://localhost:9000/tasks', taskData);
-          console.log('Task added successfully:', res.data);
+          toast.success('Task added successfully:', res.data);
     
           // Clear fields
           setTitle('');

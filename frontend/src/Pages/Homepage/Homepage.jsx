@@ -10,8 +10,8 @@ const HomePage = () => {
     
 
       {/* Hero Section */}
-      <section className="max-w-11/12  mx-auto rounded-2xl overflow-hidden bg-white  shadow-2xl flex flex-col mb-12 md:flex-row min-h-screen">
-        <div className="w-full mx-auto   flex flex-col md:flex-row items-center">
+      <section className="max-w-11/12   mx-auto rounded-2xl overflow-hidden bg-white  shadow-2xl flex flex-col mb-12 md:flex-row min-h-screen">
+        <div className="w-full mx-auto    flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-12 lg:pl-16 md:pl-8 pl-4 md:mb-0">
             <h1 className="text-5xl font-bold text-[#333333] mb-6 leading-tight">
               Organize Your Work<br/>
@@ -174,45 +174,24 @@ const HomePage = () => {
     
 
       {/* Footer */}
-      <footer className="bg-[#333333] text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-8">
-          <div>
-            <div className="h-8 w-8 bg-[#5E56E7] rounded-lg flex items-center justify-center text-white font-bold mb-4">
-              T
+      <footer className="bg-[#333333] text-white py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center space-x-2 mb-4 md:mb-0">
+              <div className="h-8 w-8 bg-[#5E56E7] rounded-lg flex items-center justify-center text-white font-bold">
+                T
+              </div>
+              <span className="font-bold text-white">TaskFlow</span>
             </div>
-            <p className="text-[#999999]">
-              Making productivity simple and effective for teams worldwide.
-            </p>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Product</h4>
-            <ul className="space-y-2 text-[#999999]">
-              <li><a href="#" className="hover:text-white">Features</a></li>
-              <li><a href="#" className="hover:text-white">Pricing</a></li>
-              <li><a href="#" className="hover:text-white">Documentation</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Company</h4>
-            <ul className="space-y-2 text-[#999999]">
-              <li><a href="#" className="hover:text-white">About</a></li>
-              <li><a href="#" className="hover:text-white">Blog</a></li>
-              <li><a href="#" className="hover:text-white">Careers</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Legal</h4>
-            <ul className="space-y-2 text-[#999999]">
-              <li><a href="#" className="hover:text-white">Privacy</a></li>
-              <li><a href="#" className="hover:text-white">Terms</a></li>
-              <li><a href="#" className="hover:text-white">Security</a></li>
-            </ul>
+            <div className="flex space-x-6">
+              <a href="#" className="text-[#999999] hover:text-white transition-colors">Privacy</a>
+              <a href="#" className="text-[#999999] hover:text-white transition-colors">Terms</a>
+              <a href="#" className="text-[#999999] hover:text-white transition-colors">Contact</a>
+            </div>
           </div>
         </div>
       </footer>
+      
     </div>
   );
 };

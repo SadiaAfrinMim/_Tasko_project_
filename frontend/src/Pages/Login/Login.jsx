@@ -50,11 +50,11 @@ const Login = () => {
   return (
     <div className="max-w-11/12 mx-auto rounded-2xl overflow-hidden bg-white shadow-xl flex flex-col md:flex-row min-h-screen">
       {/* Image Section */}
-      <div className="md:w-1/2 w-full h-50 relative bg-gradient-to-br from-[#F8F7FF] to-[#e6e4ff]">
+      <div className="md:w-1/2 hidden md:block  w-full h-50 relative bg-gradient-to-br from-[#F8F7FF] to-[#e6e4ff]">
         <img
           src={Image}
           alt="Login Visual"
-          className="w-full object-cover opacity-90"
+          className="w-full object-cover   opacity-90"
         />
         <div className="absolute bottom-8 left-8 bg-white/90 p-5 rounded-2xl shadow-lg backdrop-blur-sm">
           <h3 className="text-xl font-bold text-[#333333]">TaskFlow Pro</h3>

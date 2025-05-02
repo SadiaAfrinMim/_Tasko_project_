@@ -7,6 +7,7 @@ import axios from 'axios';
 import SubmitModal from '../../Component/Modal/SubmitModal';
 import DeleteModal from '../../Component/Modal/DeletModal';
 import Image from '../../assets/image.png';
+import { toast } from 'react-toastify';
 
 const { Option } = Select;
 
@@ -37,11 +38,11 @@ const ViewTask = () => {
     const handleDelete = async () => {
         try {
             await axios.delete(`http://localhost:9000/tasks/${id}`);
-            message.success('Task deleted successfully.');
-            navigate('/tasks');
+            toast.success('Task deleted successfully.');
+            navigate('/dashboard');
         } catch (err) {
             console.error(err);
-            message.error('Delete failed.');
+            toast.error('Delete failed.');
         }
     };
 
@@ -52,11 +53,11 @@ const ViewTask = () => {
             await axios.patch(`http://localhost:9000/task/${id}`, {
                 category: categoryValue,
             });
-            message.success('Category updated.');
+            toast.success('Category updated.');
             setIsEditing(false);
         } catch (err) {
             console.error(err);
-            message.error('Update failed.');
+            toast.error('Update failed.');
         }
     };
     

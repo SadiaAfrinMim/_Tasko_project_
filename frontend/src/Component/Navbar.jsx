@@ -27,7 +27,10 @@ const Navbar = () => {
     <nav className="fixed top-0 w-full z-10 shadow-md ">
       <div className="px-4 py-3 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-blue-600">Tasko</Link>
+        <Link to="/" className="text-2xl flex gap-2 font-bold text-blue-600">
+        <div className="h-10 w-10 bg-gradient-to-r from-[#5E56E7] to-[#8179FF] rounded-lg flex  items-center justify-center text-white font-bold text-xl">
+            T
+          </div><p className='text-white'>Tasko</p></Link>
 
         {/* Desktop Nav */}
         <ul className="hidden md:flex items-center gap-6 font-medium">
