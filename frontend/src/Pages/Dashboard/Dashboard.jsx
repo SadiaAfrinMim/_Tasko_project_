@@ -27,33 +27,38 @@ const Dashboard = () => {
     
       const handleSubmit = async (e) => {
         e.preventDefault();
-    
+      
         const taskData = {
           title,
           description,
           category: categoryValue,
           date: selectedDate.format('YYYY-MM-DD'),
           status: statusValue,
-          email: user
+          email: user,
         };
-    
+      
         try {
           const res = await axios.post('http://localhost:9000/tasks', taskData);
-          toast.success('Task added successfully:', res.data);
-    
+          toast.success('Task added successfully');
+      
+          // 👇 Re-fetch tasks after adding a new one
+          await getTasks();
+      
           // Clear fields
           setTitle('');
           setDescription('');
           setCategoryValue('');
           setSelectedDate(dayjs());
           setStatusValue('');
-    
+      
           // Close modal
           onCancel();
         } catch (err) {
           console.error('Error while adding task:', err);
+          
         }
       };
+      
     
       const filterOption = (input, option) =>
         (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
@@ -66,6 +71,7 @@ const Dashboard = () => {
         } catch (error) {
             message.error('Failed to load tasks');
         }
+       
     };
 
     useEffect(() => {
@@ -82,7 +88,7 @@ const Dashboard = () => {
     const deleteTask = async (id) => {
         try {
             await axios.delete(`http://localhost:9000/tasks/${id}`);
-            message.success('Task deleted');
+           toast.success('Task deleted');
             setTasks(prev => prev.filter(task => task._id !== id));
         } catch (err) {
             message.error(err,'Failed to delete');

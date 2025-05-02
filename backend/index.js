@@ -159,6 +159,25 @@ async function run() {
       }
     });
 
+
+
+    app.put('/tasks/:id', async (req, res) => {
+      try {
+        const id = req.params.id;
+        const { _id, ...taskData } = req.body; // _id বাদ দিয়ে বাকি ফিল্ড গুলো নিলাম
+    
+        const query = { _id: new ObjectId(id) };
+        const updated = { $set: taskData };
+        const options = { upsert: false }; // upsert true দিলে নতুন ডকুমেন্ট ইনসার্ট হয়ে যেতে পারে
+    
+        const result = await TaskCollection.updateOne(query, updated, options);
+        console.log(result);
+        res.send(result);
+      } catch (error) {
+        console.error('Error updating task:', error);
+        res.status(500).send({ message: 'Internal Server Error', error });
+      }
+    });
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 })
     console.log(

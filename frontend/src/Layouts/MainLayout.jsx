@@ -1,11 +1,13 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from '../Component/Navbar';
 import Image from '../assets/image.png';
 import useAuth from '../Hooks/useAuth';
 
 const MainLayout = () => {
   const {user} = useAuth()
+  const location = useLocation();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-[#F8F7FF]">
       {/* Header Section */}
@@ -25,10 +27,17 @@ const MainLayout = () => {
         
         </div>
         <div className="container mx-auto px-4 h-full flex items-center">
-            <div className="text-white max-w-xl">
-              <h1 className="text-3xl md:text-4xl font-bold mb-1">TaskFlow!Hi</h1>
-              <p className="text-white/80 text-sm md:text-2xl">Organize your work the smarter way</p>
-            </div>
+        {user && location.pathname === '/dashboard' && (
+  <div className="text-white max-w-xl">
+    <h1 className="text-3xl md:text-4xl font-bold mb-1">
+      TaskFlow! Hi {user?.displayName}
+    </h1>
+    <p className="text-white/80 text-sm md:text-2xl">
+      Organize your work the smarter way
+    </p>
+  </div>
+)}
+
           </div>
       </header>
 

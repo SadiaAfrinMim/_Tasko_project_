@@ -11,7 +11,7 @@ import useAuth from '../../Hooks/useAuth';
 import { BiLogIn } from 'react-icons/bi';
 
 const SignUp = () => {
-  const { createUser, updateUserProfile, signInWithGoogle, loading } = useAuth();
+  const { createUser, updateUserProfile, signInWithGoogle} = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async event => {

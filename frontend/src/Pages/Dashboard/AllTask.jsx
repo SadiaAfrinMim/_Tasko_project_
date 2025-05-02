@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const AllTask = ({ tasks, onDelete, onView }) => {
     return tasks.length ? tasks.map((task) => (
-        <Link to={`/task/${task._id}`}
+        <div
             key={task._id}
             className="space-y-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition cursor-pointer"
             onClick={() => onView(task)}
@@ -22,7 +22,7 @@ const AllTask = ({ tasks, onDelete, onView }) => {
                 {/* Middle: Title and Description */}
                 <div className="flex-1">
                     <div className="flex justify-between items-start">
-                        <h3 className="text-lg font-semibold text-gray-800">{task.title}</h3>
+                        <Link to={`/task/${task._id}`} className="text-lg font-semibold text-gray-800">{task.title}</Link>
                         <div
                             className="text-red-500 text-xl cursor-pointer hover:text-red-600"
                             onClick={(e) => {
@@ -50,7 +50,7 @@ const AllTask = ({ tasks, onDelete, onView }) => {
                     {task.status}
                 </p>
             </div>
-        </Link>
+        </div>
     )) : <p className="text-center text-gray-500 col-span-full"><NoAvailable></NoAvailable></p>;
 };
 

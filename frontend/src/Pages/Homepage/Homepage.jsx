@@ -170,27 +170,6 @@ const HomePage = () => {
       </section>
       
 
-      {/* CTA Section */}
-    
-
-      {/* Footer */}
-      <footer className="bg-[#333333] text-white py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <div className="h-8 w-8 bg-[#5E56E7] rounded-lg flex items-center justify-center text-white font-bold">
-                T
-              </div>
-              <span className="font-bold text-white">TaskFlow</span>
-            </div>
-            <div className="flex space-x-6">
-              <a href="#" className="text-[#999999] hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="text-[#999999] hover:text-white transition-colors">Terms</a>
-              <a href="#" className="text-[#999999] hover:text-white transition-colors">Contact</a>
-            </div>
-          </div>
-        </div>
-      </footer>
       
     </div>
   );

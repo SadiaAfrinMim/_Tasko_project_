@@ -10,18 +10,21 @@ import Spinner from '../Pages/Spinner/Spinner';
 import ErrorPage from '../Pages/ErrorPage/ErrorPage';
 import HomePage from '../Pages/Homepage/Homepage';
 import AddTask from '../Pages/AddTask/AddTask';
+import PrivateRoute from './PrivateRoute';
+import EditTaskModal from '../Component/Modal/EditTaskModal';
 
 const Routers = () => {
     return (
         <Routes>
         <Route path="/" element={<MainLayout />} >
-        <Route  path="/" element={<HomePage></HomePage>}></Route>
+        <Route  path="/" element={<PrivateRoute><HomePage></HomePage></PrivateRoute>}></Route>
         <Route path="/login" element={<Login></Login>} />
         <Route path='/signup' element={<SignUp></SignUp>}/>
       <Route path='/forgetpassword' element={<ForgetPassword></ForgetPassword>}></Route>
-      <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
+      <Route path="/dashboard" element={<PrivateRoute><Dashboard></Dashboard></PrivateRoute>}></Route>
       <Route path='/task/:id' element={<ViewTask></ViewTask>}></Route>
-      <Route path='/spin' element={<Spinner></Spinner>}></Route>
+      <Route path='/spin' element={<PrivateRoute><Spinner></Spinner></PrivateRoute>}></Route>
+     
       <Route path='/error' element={<ErrorPage></ErrorPage>}></Route>
       <Route path='/add' element={<AddTask></AddTask>}></Route>
         </Route>
